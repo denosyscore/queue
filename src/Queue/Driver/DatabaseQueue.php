@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Queue\Driver;
+namespace Denosys\Queue\Driver;
 
-use CFXP\Core\Database\Connection\Connection;
-use CFXP\Core\Queue\Job;
-use CFXP\Core\Queue\QueueInterface;
+use Denosys\Database\Connection\Connection;
+use Denosys\Queue\Job;
+use Denosys\Queue\QueueInterface;
 
 /**
  * Database queue driver.

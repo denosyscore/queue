@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Queue;
+namespace Denosys\Queue;
 
 /**
  * Interface marking classes as queueable jobs.

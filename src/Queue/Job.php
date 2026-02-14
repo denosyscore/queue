@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Queue;
+namespace Denosys\Queue;
 
 use Ramsey\Uuid\Uuid;
 

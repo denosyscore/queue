@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Queue;
+namespace Denosys\Queue;
 
-use CFXP\Core\Container\ContainerInterface;
-use CFXP\Core\Database\Connection\Connection;
-use CFXP\Core\Database\Connection\ConnectionManager;
-use CFXP\Core\Queue\Driver\ArrayQueue;
-use CFXP\Core\Queue\Driver\DatabaseQueue;
-use CFXP\Core\Queue\Driver\SyncQueue;
+use Denosys\Container\ContainerInterface;
+use Denosys\Database\Connection\Connection;
+use Denosys\Database\Connection\ConnectionManager;
+use Denosys\Queue\Driver\ArrayQueue;
+use Denosys\Queue\Driver\DatabaseQueue;
+use Denosys\Queue\Driver\SyncQueue;
 use InvalidArgumentException;
 use RuntimeException;
 use Throwable;

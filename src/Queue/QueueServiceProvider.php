@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Queue;
+namespace Denosys\Queue;
 
-use CFXP\Core\Container\ContainerInterface;
-use CFXP\Core\ServiceProviderInterface;
+use Denosys\Container\ContainerInterface;
+use Denosys\Contracts\ServiceProviderInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Queue;
+namespace Denosys\Queue;
 
 /**
  * Contract for queue drivers.
