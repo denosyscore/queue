@@ -11,7 +11,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Denosys\\\\Queue\\\\": "src/Queue/"
+      "Denosys\\Queue\\": "src/Queue/"
     }
   },
   "config": {
