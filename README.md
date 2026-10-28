@@ -33,6 +33,24 @@ Do not serialize the container, mailers, connections, or other live services
 inside job payloads. A separately constructed `SyncQueue` can accept a
 `JobRunner` in its constructor when it must execute container-aware jobs.
 
+## Database reservations
+
+The database driver conditionally claims each available row so competing
+workers cannot both take the same reservation. `retry_after` is the reservation
+lease in seconds, defaults to 90, and must be positive. A job whose worker
+stops before deleting or releasing it becomes available again after its lease
+expires. Configure a lease longer than normal job execution and make jobs
+idempotent: a worker can finish side effects but stop before deleting its row.
+
+```php
+'connections' => [
+    'database' => [
+        'driver' => 'database',
+        'retry_after' => 120,
+    ],
+],
+```
+
 ## Development
 
 composer validate --strict

@@ -135,7 +135,8 @@ protected array $config = [];
         return new DatabaseQueue(
             $connection,
             $config['table'] ?? 'jobs',
-            $config['failed_table'] ?? 'failed_jobs'
+            $config['failed_table'] ?? 'failed_jobs',
+            (int) ($config['retry_after'] ?? 90),
         );
     }
 
