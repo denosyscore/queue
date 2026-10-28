@@ -18,9 +18,11 @@ composer require denosyscore/queue
 
 composer validate --strict
 find src -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+composer test
 
 ## CI Workflows
 
-- CI: composer validation + PHP syntax lint on push and pull requests.
+- CI: composer validation, dependency install, PHPUnit tests, and PHP syntax
+  lint on push and pull requests.
 - Release: GitHub release publication on semantic version tags.
 - Dependabot: weekly Composer dependency update checks.
