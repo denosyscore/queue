@@ -2,6 +2,8 @@
 
 ## Unreleased (proposed 0.3.0)
 
+- Claim database jobs conditionally across workers and reclaim reservations
+  after the configured positive `retry_after` lease.
 - Add `ContainerAwareJob` and `JobRunner` so serialized jobs can resolve
   services from the bootstrapped container at execution time. Existing
   `handle()` jobs remain supported.

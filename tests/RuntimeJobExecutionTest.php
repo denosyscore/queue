@@ -8,6 +8,7 @@ use Denosys\Container\Container;
 use Denosys\Container\ContainerInterface;
 use Denosys\Database\Connection\Connection;
 use Denosys\Database\Grammar\SqliteGrammar;
+use Denosys\Database\Query\Builder;
 use Denosys\Queue\ContainerAwareJob;
 use Denosys\Queue\Driver\DatabaseQueue;
 use Denosys\Queue\Driver\SyncQueue;
@@ -48,6 +49,41 @@ final class LegacyJob extends Job
     public function handle(): void
     {
         $this->handled = true;
+    }
+}
+
+final class CompetingClaimConnection extends Connection
+{
+    public bool $claimBeforeUpdate = false;
+
+    public function query(): Builder
+    {
+        return new CompetingClaimBuilder($this);
+    }
+
+    public function claimFromAnotherWorker(int $id): void
+    {
+        if (!$this->claimBeforeUpdate) {
+            return;
+        }
+
+        $this->claimBeforeUpdate = false;
+        $this->getPdo()->prepare('UPDATE jobs SET reserved_at = ?, attempts = attempts + 1 WHERE id = ?')
+            ->execute([time(), $id]);
+    }
+}
+
+final class CompetingClaimBuilder extends Builder
+{
+    public function first(): ?object
+    {
+        $row = parent::first();
+
+        if ($row !== null && $this->connection instanceof CompetingClaimConnection) {
+            $this->connection->claimFromAnotherWorker((int) $row->id);
+        }
+
+        return $row;
     }
 }
 
@@ -123,5 +159,57 @@ final class RuntimeJobExecutionTest extends TestCase
         (new SyncQueue())->push($direct);
 
         self::assertTrue($direct->handled);
+    }
+
+    public function testExpiredReservationCanBeClaimedAgain(): void
+    {
+        $pdo = new PDO('sqlite::memory:');
+        $pdo->exec('CREATE TABLE jobs (id INTEGER PRIMARY KEY AUTOINCREMENT, queue TEXT NOT NULL, payload TEXT NOT NULL, attempts INTEGER NOT NULL, reserved_at INTEGER NULL, available_at INTEGER NOT NULL, created_at INTEGER NOT NULL)');
+        $queue = new DatabaseQueue(new Connection($pdo, new SqliteGrammar()), retryAfter: 30);
+        $queue->push(new PayloadOnlyJob('recover me'));
+
+        $first = $queue->pop();
+        self::assertNotNull($first);
+        self::assertNull($queue->pop());
+
+        $pdo->exec('UPDATE jobs SET reserved_at = ' . (time() - 31));
+        $reclaimed = $queue->pop();
+
+        self::assertNotNull($reclaimed);
+        self::assertSame($first['id'], $reclaimed['id']);
+        self::assertSame(2, $reclaimed['attempts']);
+    }
+
+    public function testCompetingClaimCannotReturnTheSameJob(): void
+    {
+        $pdo = new PDO('sqlite::memory:');
+        $pdo->exec('CREATE TABLE jobs (id INTEGER PRIMARY KEY AUTOINCREMENT, queue TEXT NOT NULL, payload TEXT NOT NULL, attempts INTEGER NOT NULL, reserved_at INTEGER NULL, available_at INTEGER NOT NULL, created_at INTEGER NOT NULL)');
+        $connection = new CompetingClaimConnection($pdo, new SqliteGrammar());
+        $queue = new DatabaseQueue($connection);
+        $queue->push(new PayloadOnlyJob('claim once'));
+        $connection->claimBeforeUpdate = true;
+
+        self::assertNull($queue->pop());
+        self::assertSame(1, (int) $pdo->query('SELECT attempts FROM jobs')->fetchColumn());
+    }
+
+    public function testQueueManagerPassesConfiguredReservationLease(): void
+    {
+        $pdo = new PDO('sqlite::memory:');
+        $pdo->exec('CREATE TABLE jobs (id INTEGER PRIMARY KEY AUTOINCREMENT, queue TEXT NOT NULL, payload TEXT NOT NULL, attempts INTEGER NOT NULL, reserved_at INTEGER NULL, available_at INTEGER NOT NULL, created_at INTEGER NOT NULL)');
+        $connection = new Connection($pdo, new SqliteGrammar());
+        $container = new Container();
+        $container->bind(Connection::class, static fn (): Connection => $connection);
+        $manager = new QueueManager($container, [
+            'default' => 'database',
+            'connections' => ['database' => ['driver' => 'database', 'retry_after' => 2]],
+        ]);
+        $manager->dispatch(new PayloadOnlyJob('leased message'));
+        $queue = $manager->connection();
+
+        self::assertNotNull($queue->pop());
+        $pdo->exec('UPDATE jobs SET reserved_at = ' . (time() - 3));
+
+        self::assertSame(2, $queue->pop()['attempts'] ?? null);
     }
 }

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Denosys\Queue\Driver;
 
 use Denosys\Database\Connection\Connection;
+use Denosys\Database\Query\Builder;
 use Denosys\Queue\Job;
 use Denosys\Queue\QueueInterface;
+use InvalidArgumentException;
 
 /**
  * Database queue driver.
@@ -19,8 +21,13 @@ class DatabaseQueue implements QueueInterface
     public function __construct(
         protected Connection $connection,
         ?string $table = null,
-        ?string $failedTable = null
+        ?string $failedTable = null,
+        protected int $retryAfter = 90,
     ) {
+        if ($retryAfter < 1) {
+            throw new InvalidArgumentException('The database queue retry_after must be positive.');
+        }
+
         if ($table !== null) {
             $this->table = $table;
         }
@@ -50,37 +57,48 @@ class DatabaseQueue implements QueueInterface
      */
     public function pop(string $queue = 'default'): ?array
     {
-        $now = time();
+        for ($claim = 0; $claim < 5; $claim++) {
+            $now = time();
+            $expiredBefore = $now - $this->retryAfter;
+            $job = $this->connection->table($this->table)
+                ->where('queue', $queue)
+                ->where('available_at', '<=', $now)
+                ->where(static function (Builder $query) use ($expiredBefore): void {
+                    $query->whereNull('reserved_at')->orWhere('reserved_at', '<=', $expiredBefore);
+                })
+                ->orderBy('id')
+                ->first();
 
-        $job = $this->connection->table($this->table)
-            ->where('queue', $queue)
-            ->where('available_at', '<=', $now)
-            ->whereNull('reserved_at')
-            ->orderBy('id')
-            ->first();
+            if ($job === null) {
+                return null;
+            }
 
-        if ($job === null) {
-            return null;
+            $job = (array) $job;
+            $update = $this->connection->table($this->table)
+                ->where('id', $job['id'])
+                ->where('queue', $queue)
+                ->where('available_at', '<=', $now)
+                ->where('attempts', (int) $job['attempts']);
+
+            if ($job['reserved_at'] === null) {
+                $update->whereNull('reserved_at');
+            } else {
+                $update->where('reserved_at', (int) $job['reserved_at'])
+                    ->where('reserved_at', '<=', $expiredBefore);
+            }
+
+            $attempts = (int) $job['attempts'] + 1;
+            if ($update->update(['reserved_at' => $now, 'attempts' => $attempts]) !== 1) {
+                continue;
+            }
+
+            $payload = json_decode($job['payload'], true);
+            $jobInstance = unserialize($payload['data']);
+
+            return ['id' => $job['id'], 'job' => $jobInstance, 'attempts' => $attempts];
         }
 
-        // Convert stdClass to array if needed
-        $job = (array) $job;
-
-        $this->connection->table($this->table)
-            ->where('id', $job['id'])
-            ->update([
-                'reserved_at' => $now,
-                'attempts' => $job['attempts'] + 1,
-            ]);
-
-        $payload = json_decode($job['payload'], true);
-        $jobInstance = unserialize($payload['data']);
-
-        return [
-            'id' => $job['id'],
-            'job' => $jobInstance,
-            'attempts' => $job['attempts'] + 1,
-        ];
+        return null;
     }
 
     /**
