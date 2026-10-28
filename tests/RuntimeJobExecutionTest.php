@@ -10,6 +10,7 @@ use Denosys\Database\Connection\Connection;
 use Denosys\Database\Grammar\SqliteGrammar;
 use Denosys\Queue\ContainerAwareJob;
 use Denosys\Queue\Driver\DatabaseQueue;
+use Denosys\Queue\Driver\SyncQueue;
 use Denosys\Queue\Job;
 use Denosys\Queue\JobRunner;
 use Denosys\Queue\QueueManager;
@@ -117,5 +118,10 @@ final class RuntimeJobExecutionTest extends TestCase
         (new JobRunner(new Container()))->run($job);
 
         self::assertTrue($job->handled);
+
+        $direct = new LegacyJob();
+        (new SyncQueue())->push($direct);
+
+        self::assertTrue($direct->handled);
     }
 }
