@@ -14,6 +14,25 @@ composer require denosyscore/queue
 
 - src/Queue/*
 
+## Runtime services for queued jobs
+
+Extend `ContainerAwareJob` when a job needs a service after it has been read
+from a queue. Store only serializable payload in the job. Implement
+`handleWithContainer(ContainerInterface $container)` and resolve services at
+execution time. `QueueManager` supplies a `JobRunner` to its synchronous
+driver. A database queue worker must call `JobRunner::run($job)` after popping
+the job; calling `handle()` directly on a container-aware job raises an error.
+Existing jobs that implement `handle()` continue to run through the runner.
+
+```php
+$runner = new \Denosys\Queue\JobRunner($container);
+$runner->run($popped['job']);
+```
+
+Do not serialize the container, mailers, connections, or other live services
+inside job payloads. A separately constructed `SyncQueue` can accept a
+`JobRunner` in its constructor when it must execute container-aware jobs.
+
 ## Development
 
 composer validate --strict

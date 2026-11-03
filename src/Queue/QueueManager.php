@@ -122,7 +122,7 @@ protected array $config = [];
 
     protected function createSyncDriver(): SyncQueue
     {
-        return new SyncQueue();
+        return new SyncQueue(new JobRunner($this->container));
     }
 
     /**

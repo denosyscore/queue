@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Denosys\Queue\Driver;
 
 use Denosys\Queue\Job;
+use Denosys\Queue\JobRunner;
 use Denosys\Queue\QueueInterface;
 
 /**
@@ -14,6 +15,10 @@ use Denosys\Queue\QueueInterface;
  */
 class SyncQueue implements QueueInterface
 {
+    public function __construct(private readonly ?JobRunner $runner = null)
+    {
+    }
+
     /**
      * Push a job - executes immediately.
      */
@@ -77,7 +82,11 @@ class SyncQueue implements QueueInterface
     protected function executeJob(Job $job): void
     {
         try {
-            $job->handle();
+            if ($this->runner !== null) {
+                $this->runner->run($job);
+            } else {
+                $job->handle();
+            }
         } catch (\Throwable $e) {
             $job->failed($e);
             throw $e;
