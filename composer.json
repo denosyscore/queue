@@ -7,7 +7,7 @@
     "php": "^8.2",
     "denosyscore/container": "^0.2",
     "denosyscore/contracts": "^0.2",
-    "denosyscore/database": "^0.2 || ^0.3 || ^0.4",
+    "denosyscore/database": "^0.2 || ^0.3 || ^0.4 || ^0.5",
     "ramsey/uuid": "^4.7"
   },
   "autoload": {
