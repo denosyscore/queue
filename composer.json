@@ -16,12 +16,14 @@
     }
   },
   "scripts": {
-    "test": "phpunit --bootstrap vendor/autoload.php tests"
+    "test": "phpunit --bootstrap vendor/autoload.php tests",
+    "analyse": "phpstan analyse --no-progress --memory-limit=1G"
   },
   "config": {
     "sort-packages": true
   },
   "require-dev": {
-    "phpunit/phpunit": "^10.5"
+    "phpunit/phpunit": "^10.5",
+    "phpstan/phpstan": "^2.1"
   }
 }

@@ -1,0 +1,169 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 3
+			path: src/Queue/Driver/ArrayQueue.php
+
+		-
+			message: '#^Binary operation "\+" between mixed and 1 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/Queue/Driver/ArrayQueue.php
+
+		-
+			message: '#^Cannot access an offset on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Queue/Driver/ArrayQueue.php
+
+		-
+			message: '#^Cannot access offset ''attempts'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Queue/Driver/ArrayQueue.php
+
+		-
+			message: '#^Cannot access offset ''available_at'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/Queue/Driver/ArrayQueue.php
+
+		-
+			message: '#^Cannot access offset ''id'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: src/Queue/Driver/ArrayQueue.php
+
+		-
+			message: '#^Cannot access offset ''job'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Queue/Driver/ArrayQueue.php
+
+		-
+			message: '#^Cannot access offset mixed on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: src/Queue/Driver/ArrayQueue.php
+
+		-
+			message: '#^Method Denosys\\Queue\\Driver\\ArrayQueue\:\:pop\(\) should return array\{id\: int\|string, job\: Denosys\\Queue\\Job, attempts\: int\}\|null but returns array\{id\: mixed, job\: mixed, attempts\: \(float\|int\)\}\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Queue/Driver/ArrayQueue.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_values expects array\<T\>, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Queue/Driver/ArrayQueue.php
+
+		-
+			message: '#^Parameter \#1 \$value of function count expects array\|Countable, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Queue/Driver/ArrayQueue.php
+
+		-
+			message: '#^Cannot access offset ''data'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Queue/Driver/DatabaseQueue.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 3
+			path: src/Queue/Driver/DatabaseQueue.php
+
+		-
+			message: '#^Method Denosys\\Queue\\Driver\\DatabaseQueue\:\:pop\(\) should return array\{id\: int\|string, job\: Denosys\\Queue\\Job, attempts\: int\}\|null but returns array\{id\: mixed, job\: mixed, attempts\: int\}\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Queue/Driver/DatabaseQueue.php
+
+		-
+			message: '#^Parameter \#1 \$data of function unserialize expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Queue/Driver/DatabaseQueue.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Queue/Driver/DatabaseQueue.php
+
+		-
+			message: '#^Method Denosys\\Queue\\Job\:\:unserialize\(\) should return static\(Denosys\\Queue\\Job\) but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Queue/Job.php
+
+		-
+			message: '#^Binary operation "\." between mixed and ''/config/queue\.php'' results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/Queue/QueueManager.php
+
+		-
+			message: '#^Cannot access offset ''default'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Queue/QueueManager.php
+
+		-
+			message: '#^Cannot access offset ''driver'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Queue/QueueManager.php
+
+		-
+			message: '#^Cannot access offset string on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Queue/QueueManager.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: src/Queue/QueueManager.php
+
+		-
+			message: '#^Parameter \#1 \$config of method Denosys\\Queue\\QueueManager\:\:createDatabaseDriver\(\) expects array\<string, mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Queue/QueueManager.php
+
+		-
+			message: '#^Parameter \#2 \$table of class Denosys\\Queue\\Driver\\DatabaseQueue constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Queue/QueueManager.php
+
+		-
+			message: '#^Parameter \#3 \$failedTable of class Denosys\\Queue\\Driver\\DatabaseQueue constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Queue/QueueManager.php
+
+		-
+			message: '#^Part \$driver \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Queue/QueueManager.php
+
+		-
+			message: '#^Property Denosys\\Queue\\QueueManager\:\:\$config \(array\<string, mixed\>\) does not accept mixed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Queue/QueueManager.php
+
+		-
+			message: '#^Property Denosys\\Queue\\QueueManager\:\:\$default \(string\) does not accept mixed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Queue/QueueManager.php
