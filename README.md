@@ -2,13 +2,52 @@
 
 Queue manager, drivers, and job contracts
 
-## Status
-
-Initial extraction snapshot from denosyscore monorepo as of 2026-02-14.
-
 ## Installation
 
+```bash
 composer require denosyscore/queue
+```
+
+## Quick start
+
+Push jobs onto a queue and run them with a worker.
+
+<!-- quickstart -->
+```php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Denosys\Container\Container;
+use Denosys\Queue\Driver\ArrayQueue;
+use Denosys\Queue\Job;
+use Denosys\Queue\JobRunner;
+
+// Jobs carry payload data only; services are resolved when the job runs.
+final class SendWelcomeEmail extends Job
+{
+    public function __construct(private readonly string $email)
+    {
+        parent::__construct();
+    }
+
+    public function handle(): void
+    {
+        echo "Welcome email sent to {$this->email}\n";
+    }
+}
+
+$queue = new ArrayQueue();  // DatabaseQueue in production
+$queue->push(new SendWelcomeEmail('ada@example.com'));
+echo $queue->size(), " job waiting\n";  // 1 job waiting
+
+// A worker pops, runs and deletes.
+$runner = new JobRunner(new Container());
+while ($popped = $queue->pop()) {
+    $runner->run($popped['job']);
+    $queue->delete($popped['id']);
+}
+```
 
 ## Included Modules
 
