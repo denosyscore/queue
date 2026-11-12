@@ -5,8 +5,8 @@
   "license": "MIT",
   "require": {
     "php": "^8.2",
-    "denosyscore/container": "^0.10",
-    "denosyscore/database": "^0.10",
+    "denosyscore/container": "^0.11",
+    "denosyscore/database": "^0.11",
     "ramsey/uuid": "^4.7"
   },
   "autoload": {
@@ -27,7 +27,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-main": "0.10.x-dev"
+      "dev-main": "0.11.x-dev"
     }
   }
 }
