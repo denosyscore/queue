@@ -5,9 +5,9 @@
   "license": "MIT",
   "require": {
     "php": "^8.2",
-    "denosyscore/container": "^0.2",
-    "denosyscore/contracts": "^0.2",
-    "denosyscore/database": "^0.2 || ^0.3 || ^0.4 || ^0.5",
+    "denosyscore/container": "^0.10",
+    "denosyscore/contracts": "^0.10",
+    "denosyscore/database": "^0.10",
     "ramsey/uuid": "^4.7"
   },
   "autoload": {
@@ -25,5 +25,10 @@
   "require-dev": {
     "phpunit/phpunit": "^10.5",
     "phpstan/phpstan": "^2.1"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-main": "0.10.x-dev"
+    }
   }
 }

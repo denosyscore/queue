@@ -1,5 +1,7 @@
 # denosyscore/queue
 
+> **Read-only split.** This package is developed in [denosyscore/framework](https://github.com/denosyscore/framework) under `packages/queue`. Open issues and pull requests there.
+
 Queue manager, drivers, and job contracts
 
 ## Installation
@@ -98,12 +100,6 @@ composer validate --strict
 find src -type f -name '*.php' -print0 | xargs -0 -n1 php -l
 composer test
 
-## CI Workflows
-
-- CI: composer validation, dependency install, PHPUnit tests, and PHP syntax
-  lint on push and pull requests.
-- Release: GitHub release publication on semantic version tags.
-- Dependabot: weekly Composer dependency update checks.
 
 ## Releases
 
