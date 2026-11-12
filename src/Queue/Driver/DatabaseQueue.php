@@ -63,9 +63,9 @@ class DatabaseQueue implements QueueInterface
             $job = $this->connection->table($this->table)
                 ->where('queue', $queue)
                 ->where('available_at', '<=', $now)
-                ->where(static function (Builder $query) use ($expiredBefore): void {
-                    $query->whereNull('reserved_at')->orWhere('reserved_at', '<=', $expiredBefore);
-                })
+                ->where(static fn (Builder $query): Builder => $query
+                    ->whereNull('reserved_at')
+                    ->orWhere('reserved_at', '<=', $expiredBefore))
                 ->orderBy('id')
                 ->first();
 
@@ -81,9 +81,9 @@ class DatabaseQueue implements QueueInterface
                 ->where('attempts', (int) $job['attempts']);
 
             if ($job['reserved_at'] === null) {
-                $update->whereNull('reserved_at');
+                $update = $update->whereNull('reserved_at');
             } else {
-                $update->where('reserved_at', (int) $job['reserved_at'])
+                $update = $update->where('reserved_at', (int) $job['reserved_at'])
                     ->where('reserved_at', '<=', $expiredBefore);
             }
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.17.0 – 2026-11-12
+
+- `DatabaseQueue` builds its claim query for the immutable query builder.
+
 ## 0.16.0 – 2026-11-12
 
 - Adds `queue:work` (`Denosys\Queue\Console\QueueWorkCommand`), moved from
