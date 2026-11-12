@@ -6,7 +6,6 @@
   "require": {
     "php": "^8.2",
     "denosyscore/container": "^0.10",
-    "denosyscore/contracts": "^0.10",
     "denosyscore/database": "^0.10",
     "ramsey/uuid": "^4.7"
   },

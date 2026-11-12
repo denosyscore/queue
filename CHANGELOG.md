@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.11.0 – 2026-11-12
+
+- **Breaking:** `Denosys\Queue\QueueServiceProvider` moved to the framework as `Denosys\Framework\Providers\QueueServiceProvider`. Packages no longer ship service providers; the framework wires packages together.
+
 ## 0.10.0 – 2026-11-12
 
 ### Changed
