@@ -1,6 +1,108 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Cannot access offset ''attempts'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Queue/Console/QueueWorkCommand.php
+
+		-
+			message: '#^Cannot access offset ''id'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Queue/Console/QueueWorkCommand.php
+
+		-
+			message: '#^Cannot access offset ''job'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Queue/Console/QueueWorkCommand.php
+
+		-
+			message: '#^Cannot call method connection\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Queue/Console/QueueWorkCommand.php
+
+		-
+			message: '#^Cannot call method delete\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: src/Queue/Console/QueueWorkCommand.php
+
+		-
+			message: '#^Cannot call method displayName\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Queue/Console/QueueWorkCommand.php
+
+		-
+			message: '#^Cannot call method failed\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Queue/Console/QueueWorkCommand.php
+
+		-
+			message: '#^Cannot call method pop\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Queue/Console/QueueWorkCommand.php
+
+		-
+			message: '#^Cannot call method release\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Queue/Console/QueueWorkCommand.php
+
+		-
+			message: '#^Cannot call method retryAfter\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Queue/Console/QueueWorkCommand.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 2
+			path: src/Queue/Console/QueueWorkCommand.php
+
+		-
+			message: '#^Parameter \#1 \$id of method Denosys\\Queue\\Driver\\DatabaseQueue\:\:fail\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Queue/Console/QueueWorkCommand.php
+
+		-
+			message: '#^Parameter \#1 \$job of method Denosys\\Queue\\JobRunner\:\:run\(\) expects Denosys\\Queue\\Job, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Queue/Console/QueueWorkCommand.php
+
+		-
+			message: '#^Parameter \#2 \$job of method Denosys\\Queue\\Driver\\DatabaseQueue\:\:fail\(\) expects Denosys\\Queue\\Job, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Queue/Console/QueueWorkCommand.php
+
+		-
+			message: '#^Part \$attempts \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Queue/Console/QueueWorkCommand.php
+
+		-
+			message: '#^Part \$displayName \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Queue/Console/QueueWorkCommand.php
+
+		-
+			message: '#^Part \$queueName \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Queue/Console/QueueWorkCommand.php
+
+		-
 			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
 			identifier: foreach.nonIterable
 			count: 3
